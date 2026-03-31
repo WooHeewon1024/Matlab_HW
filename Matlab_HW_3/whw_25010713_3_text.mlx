@@ -1,0 +1,121 @@
+%%1
+
+f=@(x)0.3*x-sin(2*x);
+df=@(x)0.3-2*cos(2*x);
+
+x1=fzero(f,0);
+x2=fzero(f,[1 2]);
+a1=fzero(df,[0 1]);
+a2=fzero(df,[2 3]);
+
+b1=f(0);
+b2=f(4);
+b3=f(a1);
+b4=f(a2);
+
+x=[0 a1 a2 4];
+y=[b1 b3 b4 b2];
+
+[m1,idx]=min(y);
+minx=x(idx);
+
+fprintf('x1=%.4f\n',x1);
+fprintf('x2=%.4f\n',x2);
+fprintf('minx=%.4f\n',minx);
+fprintf('min=%.4f\n',m1);
+
+
+
+%2
+
+h=100;
+v0=50;
+g=9.81;
+a2=-0.5*g;
+b2=v0;
+c2=-h;
+
+t=roots([a2 b2 c2]);
+t1=t(1);
+t2=t(2);
+
+fprintf('t1=%.4f\n',t1);
+fprintf('t2=%.4f\n',t2);
+
+
+
+
+%3
+
+global V
+V=10;
+f=@(r)whw_25010713_func_4(r);
+r1=fminbnd(f,0.1,10);
+h1=3*V/(pi*r1^2);
+A1=f(r1);
+r=0.1:0.01:5;
+A=f(r);
+
+plot(r,A)
+xlabel('r')
+ylabel('A')
+title('r에 대한 A의 그래프')
+grid on
+
+target=1.1*A1;
+g=@(r)(f(r)-target)^2;
+r2=fminbnd(g,0.1,r1);
+r3=fminbnd(g,r1,10);
+fprintf('r=%.4f\n',r1);
+fprintf('h=%.4f\n',h1);
+fprintf('r_left=%.4f\n',r2);
+fprintf('r_right=%.4f\n',r3);
+
+
+%%4번
+
+f=@(x)10*exp(-2*x);
+x=0:0.01:2;
+y=f(x);
+
+plot(x,y)
+xlabel('x')
+ylabel('y')
+title('10e^{-2x}에 대한 익명함수')
+grid on
+
+
+
+
+%5번
+
+f=@(x)30*x.^2-300*x+4;
+x=0:0.01:10;
+y=f(x);
+
+plot(x,y)
+xlabel('x')
+ylabel('y')
+title('30x^2-300x+4에 대한 익명합수')
+grid on
+
+x1=fminbnd(f,0,10);
+y1=f(x1);
+fprintf('x=%.4f\n',x1);
+fprintf('min=%.4f\n',y1);
+
+
+% 6번
+
+f=@(x)x.^2;
+g=@(y)3*cos(y);
+h=@(z)6*exp(z);
+k=@(x)h(g(f(x)));
+x=0:0.01:4;
+y=k(x);
+
+plot(x,y)
+xlabel('x')
+ylabel('y')
+title('6e^{3cos(x^2)}에 대한 익명함수')
+grid on
