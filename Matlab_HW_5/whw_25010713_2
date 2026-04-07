@@ -1,0 +1,25 @@
+%%2
+
+
+name=input('이름: ','s');
+a=input('점수 [국 영 수]: ');
+
+avg=sum(a)/length(a);
+
+disp(['이름: ',name])
+disp(['점수: ',num2str(a)])
+
+fprintf('평균: %.2f\n',avg)
+
+if avg>=90
+    disp('Excellent')
+elseif avg>=80
+    disp('Good')
+elseif avg>=70
+    disp('Fair')
+else
+    disp('Needs Improvement')
+    
+end
+
+
