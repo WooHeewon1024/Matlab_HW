@@ -1,0 +1,296 @@
+'''
+// 1번
+
+clear, clc
+t = 0:0.01:30;
+f = exp(-0.12*t).*sin(5*t) + 0.3*cos(2*t);
+plot(t,f)
+hold on
+u = exp(-0.12*t) + 0.3;
+l = -exp(-0.12*t) - 0.3;
+plot(t,u)
+plot(t,l)
+k = find(f(2:end-1) > f(1:end-2) & f(2:end-1) > f(3:end)) + 1;
+plot(t(k),f(k),'o')
+legend('f(t)','u(t)','l(t)','local maxima')
+T = [t(k)' f(k)'];
+disp(T)
+
+
+
+// 2번
+
+
+clear, clc
+x = -5:0.05:5;
+y = -5:0.05:5;
+[X,Y] = meshgrid(x,y);
+Z = sin(X.*Y)./(1 + X.^2 + Y.^2);
+mesh(X,Y,Z)
+figure
+contour(X,Y,Z,25)
+a = abs(Z);
+[m,idx] = max(a(:));
+[row,col] = ind2sub(size(a),idx);
+xmax = X(row,col);
+ymax = Y(row,col);
+fprintf('max abs(Z)  %.4f\n',m)
+fprintf('x %.4f, y  %.4f\n',xmax,ymax)
+
+
+// 3번
+clear, clc
+A = [7 2 1; 2 6 -2; 1 -2 5];
+[V,D] = eig(A);
+d = diag(D);
+[lambda,idx] = max(d);
+v = V(:,idx);
+v = v/norm(v);
+r = A*v - lambda*v;
+
+disp(V)
+
+disp(D)
+
+disp(d)
+
+fprintf('lambda %.4f\n',lambda)
+fprintf('idx %.4f\n',idx)
+
+disp(v)
+
+disp(r)
+
+
+
+//4번
+
+X = [2 5 1; 4 8 3; 6 11 7; 9 15 10; 13 20 14];
+m = mean(X);
+Xc = X - m;
+S = Xc' * Xc;
+[V,D] = eig(S);
+d = diag(D);
+[lambda,idx] = max(d);
+v = V(:,idx);
+
+disp(m)
+
+disp(Xc)
+
+disp(S)
+
+disp(d)
+
+fprintf('largest eigenvalue  %.4f\n',lambda)
+
+disp(v)
+
+
+
+
+//5번
+clear, clc
+
+A = [5 2 -1; -2 6 3; 1 -1 7];
+b = [8; 5; 12];
+x1 = inv(A) * b;
+x2 = A \ b;
+d = x1 - x2;
+a = det(A);
+
+disp(x1)
+
+disp(x2)
+
+disp(d)
+fprintf('det(A)  %.4f\n',a)
+
+
+
+if a ~= 0
+    disp('해가 유일')
+else
+    disp('해가 유일하지 않음')
+end
+
+
+// 6번
+clear, clc
+
+x = -6:0.05:6;
+y = -6:0.05:6;
+[X,Y] = meshgrid(x,y);
+Z = exp(-0.08*(X.^2 + Y.^2)).*cos(3*X).*sin(2*Y);
+surf(X,Y,Z)
+figure
+contour(X,Y,Z,30)
+
+
+
+[zmax,idx1] = max(Z(:));
+[zmin,idx2] = min(Z(:));
+
+[row1,col1] = ind2sub(size(Z),idx1);
+[row2,col2] = ind2sub(size(Z),idx2);
+
+xmax = X(row1,col1);
+ymax = Y(row1,col1);
+
+xmin = X(row2,col2);
+ymin = Y(row2,col2);
+
+fprintf('%.4f',zmax)
+fprintf('%.4f, %.4f\n',xmax,ymax)
+
+fprintf('%.4f',zmin)
+fprintf('%.4f, %.4f\n',xmin,ymin)
+
+// 7번
+clear, clc
+
+n = [50 100 200 400 800 1600];
+T = [14 19 30 51 92 170];
+
+subplot(1,3,1)
+plot(n,T,'o-')
+
+subplot(1,3,2)
+semilogx(n,T,'o-')
+
+subplot(1,3,3)
+semilogy(n,T,'o-')
+
+
+//일반 그래프가 가장 직선에 가깝기 때문에 사용자수와 평균 응답시간은 선형적입니다.
+
+
+// 8번
+
+
+t = 0:0.01:24;
+P = 50 + 18*sin(pi*t/12) + 6*cos(pi*t/4);
+plot(t,P)
+hold on
+[pmax,idx1] = max(P);
+[pmin,idx2] = min(P);
+tmax = t(idx1);
+tmin = t(idx2);
+plot(tmax,pmax,'o')
+plot(tmin,pmin,'x')
+
+legend('P(t)','maximum point','minimum point')
+
+fprintf('%.4f\n',pmax)
+fprintf('%.4f\n',tmax)
+
+fprintf('%.4f\n',pmin)
+fprintf('%.4f\n',tmin)
+
+// 9번
+clear, clc
+
+X = [1 3 0; 2 5 1; 4 8 3; 7 12 5; 11 17 9];
+
+x1 = X(:,1);
+x2 = X(:,2);
+x3 = X(:,3);
+theta12 = acosd(dot(x1,x2)/(norm(x1)*norm(x2)));
+theta13 = acosd(dot(x1,x3)/(norm(x1)*norm(x3)));
+theta23 = acosd(dot(x2,x3)/(norm(x2)*norm(x3)));
+theta = [theta12 theta13 theta23];
+[m,idx] = min(theta);
+
+fprintf('%.4f\n',theta12)
+fprintf('%.4f\n',theta13)
+fprintf('%.4f\n',theta23)
+disp(theta)
+fprintf('%.4f\n',m)
+
+if idx == 1
+    disp('방향 비슷한 센서> 1,2')
+elseif idx == 2
+    disp('방향 비슷한 센서> 1,3')
+else
+    disp('방향 비슷한 센서> 3,2')
+end
+
+
+
+// 10번
+clear, clc
+
+A = [9 -2 -1; -2 8 -3; -1 -3 10];
+b = [15; 7; 11];
+I = A \ b;
+d = det(A);
+a = abs(I);
+[m,idx] = max(a);
+
+disp(A)
+
+disp(b)
+
+disp(I)
+
+fprintf('%.4f\n',d)
+
+if d ~= 0
+    disp('가역')
+else
+    disp('비가역')
+end
+
+disp(a)
+
+fprintf('%.4f\n',m)
+fprintf('%d\n',idx)
+
+
+
+// 11번
+clear, clc
+
+t = 0:0.01:40;
+y = exp(-0.04*t).*(sin(4*t) + 0.6*sin(9*t));
+u = 1.6*exp(-0.04*t);
+l = -1.6*exp(-0.04*t);
+
+plot(t,y)
+hold on
+plot(t,u)
+plot(t,l)
+legend('y(t)','u(t)','l(t)')
+
+figure
+semilogy(t,abs(y))
+
+u0 = 1.6*exp(-0.04*0);
+u40 = 1.6*exp(-0.04*40);
+
+fprintf('%.4f\n',u0)
+fprintf('%.4f\n',u40)
+
+// 12번
+
+epoch = [1 2 5 10 20 50 100 200];
+loss = [3.1 2.4 1.7 1.2 0.83 0.36 0.14 0.06];
+plot(epoch,loss,'o-')
+figure
+semilogy(epoch,loss,'o-')
+
+r = loss(2:end)./loss(1:end-1);
+rmean = mean(r);
+disp(r)
+fprintf('%.4f\n',rmean)
+
+if rmean < 1
+    disp('평균비율 1보다 작음>감소')
+else
+    disp('평균비율 1보다 작지않음> 감소X')
+end
+
+'''
+
+
+
