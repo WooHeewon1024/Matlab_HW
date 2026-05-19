@@ -1,4 +1,4 @@
-'''
+```MATLAB
 %% 1번
 
 
@@ -16,9 +16,9 @@ battery = B(:,4);
 netPower = solar - demand;
 plot(hour,netPower,'-o')
 grid on
+```
 
-
-
+```MATLAB
 %% 2번
 
 
@@ -43,9 +43,9 @@ B = [RouteID(BatteryPerKm > 6) ...
      DistanceKm(BatteryPerKm > 6) ...
      BatteryPerKm(BatteryPerKm > 6)];
 disp(B)
+```
 
-
-
+```MATLAB
 %% 3번
 
 
@@ -58,10 +58,10 @@ Farm = table(Zone,Temp,Humidity,Light,CO2);
 Farm.EnvIndex = 0.4*Farm.Temp + 0.01*Farm.Light + 0.02*Farm.CO2;
 HighEnv = Farm(Farm.EnvIndex >= 25,:);
 HighEnv(:,{'Zone','Temp','Light','EnvIndex'})
+```
 
 
-
-
+```MATLAB
 %% 4번
 
 
@@ -75,11 +75,11 @@ Factory.RiskScore = Factory.Vibration .* Factory.Temp ./ Factory.Power;
 RiskMachines = Factory(Factory.RiskScore >= 35 & Factory.Defect >= 6,:);
 RiskMachines(:,{'Machine','RiskScore','Defect'})
 writetable(Factory,'factory_risk.csv')
+```
 
 
 
-
-
+```MATLAB
 %% 5번
 
 
@@ -89,19 +89,19 @@ Abalone.Properties.VariableNames = {'Sex','Length','Diameter','Height','WholeWei
 Abalone(:,{'WholeWeight','ShellWeight','Rings'})
 OldMale = Abalone(strcmp(Abalone.Sex,'M') & Abalone.Rings >= 15,:);
 OldMale(:,{'Sex','Length','WholeWeight','Rings'})
+```
 
-
-
+```MATLAB
 %% 6번
 
 Abalone.ShellRatio = Abalone.ShellWeight ./ Abalone.WholeWeight;
 HardShell = Abalone(Abalone.ShellRatio >= 0.25 & Abalone.Rings >= 12,:);
 HardShell(:,{'Sex','WholeWeight','ShellWeight','ShellRatio','Rings'})
 ratioData = Abalone.ShellRatio;
+```
 
 
-
-
+```MATLAB
 %% 7번
 
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/forestfires.csv';
@@ -113,19 +113,19 @@ rain = Fire.rain;
 area = Fire.area;
 HotDryFires = Fire(Fire.temp >= 25 & Fire.RH <= 35,:);
 HotDryFires(:,{'month','day','temp','RH','wind','area'})
+```
 
-
-
+```MATLAB
 %% 8번
 
 Fire.RiskIndex = Fire.temp .* Fire.wind ./ Fire.RH;
 RiskFire = Fire(Fire.RiskIndex >= 2 & Fire.area > 0,:);
 RiskFire(:,{'month','day','temp','RH','wind','area','RiskIndex'})
 writetable(RiskFire,'forest_risk.csv')
+```
 
 
-
-
+```MATLAB
 %% 9번
 
 
@@ -136,20 +136,20 @@ P.Properties.VariableNames{'culmen_depth_mm'} = 'bill_depth_mm';
 a = P(P.body_mass_g >= 4500,:);
 a(:,{'species','island','body_mass_g','sex'})
 LargeGentoo = P(strcmp(P.species,'Gentoo') & P.body_mass_g >= 5000,:);
+```
 
 
-
-
+```MATLAB
 %% 10번
 
 P.BillRatio = P.bill_length_mm ./ P.bill_depth_mm;
 LongBill = P(P.BillRatio >= 2.8,:);
 LongBill(:,{'species','bill_length_mm','bill_depth_mm','BillRatio'})
 billRatioData = P.BillRatio;
+```
 
 
-
-
+```MATLAB
 %% 11번
 
 
@@ -160,18 +160,19 @@ HighRisk = H(H.age >= 70 & H.ejection_fraction <= 35,:);
 HighRisk(:,{'age','ejection_fraction','serum_creatinine','serum_sodium','DEATH_EVENT'})
 DeathGroup = H(H.DEATH_EVENT == 1,:);
 SurvivalGroup = H(H.DEATH_EVENT == 0,:);
+```
 
 
-
-
+```MATLAB
 %% 12번
 
 H.RiskScore = H.age ./ H.ejection_fraction + H.serum_creatinine;
 RiskScoreGroup = H(H.RiskScore >= 4,:);
 RiskScoreGroup(:,{'age','ejection_fraction','serum_creatinine','RiskScore','DEATH_EVENT'})
 writetable(RiskScoreGroup,'heart_risk_group.csv')
+```
 
-
+```MATLAB
 %% 13번
 
 
@@ -191,8 +192,4 @@ avgBalance = mean(balanceVec);
 writetable(Subscribed,'bank_selected.csv')
 
 
-
-
-
-
-'''
+```
