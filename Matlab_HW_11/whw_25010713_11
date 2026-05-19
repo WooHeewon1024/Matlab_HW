@@ -1,0 +1,198 @@
+'''
+%% 1번
+
+
+Hour = (6:17)';
+SolarGen = [0.5 1.2 2.4 3.8 4.6 5.1 5.4 5.0 4.2 3.0 1.7 0.8]';
+Demand = [1.8 2.0 2.3 2.7 3.1 3.4 3.8 4.0 3.7 3.4 3.0 2.5]';
+Battery = [3.2 3.0 3.1 3.8 4.5 5.2 5.9 6.3 6.5 6.1 5.4 4.7]';
+A = [Hour SolarGen Demand Battery];
+writematrix(A,'solar_system.txt')
+B = load('solar_system.txt');
+hour = B(:,1);
+solar = B(:,2);
+demand = B(:,3);
+battery = B(:,4);
+netPower = solar - demand;
+plot(hour,netPower,'-o')
+grid on
+
+
+
+%% 2번
+
+
+D = [...
+1 2.1 8 12;
+2 3.4 13 19;
+3 1.8 7 10;
+4 5.2 21 31;
+5 4.7 19 28;
+6 6.0 25 36;
+7 3.1 12 18;
+8 5.8 24 35];
+writematrix(D,'drone_delivery.txt')
+A = load('drone_delivery.txt');
+RouteID = A(:,1);
+DistanceKm = A(:,2);
+TimeMin = A(:,3);
+BatteryUsed = A(:,4);
+speed = DistanceKm ./ TimeMin;
+BatteryPerKm = BatteryUsed ./ DistanceKm;
+B = [RouteID(BatteryPerKm > 6) ...
+     DistanceKm(BatteryPerKm > 6) ...
+     BatteryPerKm(BatteryPerKm > 6)];
+disp(B)
+
+
+
+%% 3번
+
+
+Zone = {'Z1';'Z2';'Z3';'Z4';'Z5';'Z6';'Z7';'Z8'};
+Temp = [22.5;24.1;21.8;25.3;23.7;26.0;22.9;24.8];
+Humidity = [61;58;67;55;62;53;65;57];
+Light = [420;460;390;520;480;550;410;500];
+CO2 = [510;540;495;610;575;640;520;600];
+Farm = table(Zone,Temp,Humidity,Light,CO2);
+Farm.EnvIndex = 0.4*Farm.Temp + 0.01*Farm.Light + 0.02*Farm.CO2;
+HighEnv = Farm(Farm.EnvIndex >= 25,:);
+HighEnv(:,{'Zone','Temp','Light','EnvIndex'})
+
+
+
+
+%% 4번
+
+
+Machine = {'M1';'M2';'M3';'M4';'M5';'M6';'M7';'M8';'M9';'M10'};
+Vibration = [1.8;2.4;1.5;3.1;2.7;1.9;3.5;2.2;1.6;2.9];
+Temp = [68;72;65;78;74;69;82;71;66;76];
+Power = [4.5;5.1;4.2;6.3;5.7;4.8;6.8;5.0;4.4;6.0];
+Defect = [2;5;1;8;6;3;10;4;1;7];
+Factory = table(Machine,Vibration,Temp,Power,Defect);
+Factory.RiskScore = Factory.Vibration .* Factory.Temp ./ Factory.Power;
+RiskMachines = Factory(Factory.RiskScore >= 35 & Factory.Defect >= 6,:);
+RiskMachines(:,{'Machine','RiskScore','Defect'})
+writetable(Factory,'factory_risk.csv')
+
+
+
+
+
+%% 5번
+
+
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data';
+Abalone = readtable(url,'FileType','text','ReadVariableNames',false);
+Abalone.Properties.VariableNames = {'Sex','Length','Diameter','Height','WholeWeight','ShuckedWeight','VisceraWeight','ShellWeight','Rings'};
+Abalone(:,{'WholeWeight','ShellWeight','Rings'})
+OldMale = Abalone(strcmp(Abalone.Sex,'M') & Abalone.Rings >= 15,:);
+OldMale(:,{'Sex','Length','WholeWeight','Rings'})
+
+
+
+%% 6번
+
+Abalone.ShellRatio = Abalone.ShellWeight ./ Abalone.WholeWeight;
+HardShell = Abalone(Abalone.ShellRatio >= 0.25 & Abalone.Rings >= 12,:);
+HardShell(:,{'Sex','WholeWeight','ShellWeight','ShellRatio','Rings'})
+ratioData = Abalone.ShellRatio;
+
+
+
+
+%% 7번
+
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/forestfires.csv';
+Fire = readtable(url);
+temp = Fire.temp;
+RH = Fire.RH;
+wind = Fire.wind;
+rain = Fire.rain;
+area = Fire.area;
+HotDryFires = Fire(Fire.temp >= 25 & Fire.RH <= 35,:);
+HotDryFires(:,{'month','day','temp','RH','wind','area'})
+
+
+
+%% 8번
+
+Fire.RiskIndex = Fire.temp .* Fire.wind ./ Fire.RH;
+RiskFire = Fire(Fire.RiskIndex >= 2 & Fire.area > 0,:);
+RiskFire(:,{'month','day','temp','RH','wind','area','RiskIndex'})
+writetable(RiskFire,'forest_risk.csv')
+
+
+
+
+%% 9번
+
+
+P = readtable('penguins.csv');
+P.Properties.VariableNames
+P.Properties.VariableNames{'culmen_length_mm'} = 'bill_length_mm';
+P.Properties.VariableNames{'culmen_depth_mm'} = 'bill_depth_mm';
+a = P(P.body_mass_g >= 4500,:);
+a(:,{'species','island','body_mass_g','sex'})
+LargeGentoo = P(strcmp(P.species,'Gentoo') & P.body_mass_g >= 5000,:);
+
+
+
+
+%% 10번
+
+P.BillRatio = P.bill_length_mm ./ P.bill_depth_mm;
+LongBill = P(P.BillRatio >= 2.8,:);
+LongBill(:,{'species','bill_length_mm','bill_depth_mm','BillRatio'})
+billRatioData = P.BillRatio;
+
+
+
+
+%% 11번
+
+
+
+H = readtable('heart_failure.csv');
+H.Properties.VariableNames
+HighRisk = H(H.age >= 70 & H.ejection_fraction <= 35,:);
+HighRisk(:,{'age','ejection_fraction','serum_creatinine','serum_sodium','DEATH_EVENT'})
+DeathGroup = H(H.DEATH_EVENT == 1,:);
+SurvivalGroup = H(H.DEATH_EVENT == 0,:);
+
+
+
+
+%% 12번
+
+H.RiskScore = H.age ./ H.ejection_fraction + H.serum_creatinine;
+RiskScoreGroup = H(H.RiskScore >= 4,:);
+RiskScoreGroup(:,{'age','ejection_fraction','serum_creatinine','RiskScore','DEATH_EVENT'})
+writetable(RiskScoreGroup,'heart_risk_group.csv')
+
+
+%% 13번
+
+
+
+B = readtable('bank-full.csv','Delimiter',';');
+B.Properties.VariableNames
+age = B.age;
+balance = B.balance;
+loan = B.loan;
+y = B.y;
+T1 = B(B.age >= 40 & B.balance >= 2000 & strcmp(B.loan,'no'),:);
+T2 = T1(:,{'age','balance','y'});
+T2.NewFlag = strcmp(T2.y,'yes');
+Subscribed = T2(T2.NewFlag == 1,:);
+balanceVec = Subscribed.balance;
+avgBalance = mean(balanceVec);
+writetable(Subscribed,'bank_selected.csv')
+
+
+
+
+
+
+'''
