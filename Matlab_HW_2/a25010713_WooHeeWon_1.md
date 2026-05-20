@@ -1,4 +1,4 @@
-```-matlab
+```MATLAB
 
 x=2;
 y=6*(x^3)+4/x;
